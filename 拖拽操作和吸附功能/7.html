@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #container{
+            margin: 50px;
+        }
+        #div1{
+            width: 200px;
+            height: 800px;
+            float: left;
+            border: 1px solid red;
+            margin-right: 5px;
+        }
+        #div2{
+            width: 800px;
+            height: 800px;
+            float: left;
+            border: 1px solid blue;
+            position: relative;
+        }
+        .div1_1{
+            width: 100px;
+            height: 100px;
+            background-color: #ccc;
+            margin:20px;
+            box-sizing: border-box;
+            /*cursor: move;*/
+        }
+        #div2 .div1_1{
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+<div id="container">
+    <div id="div1">
+        <div id="div1_1" class="div1_1" draggable="true">
+
+        </div>
+        <span id="testdiv" draggable="false" style="font-size: 0">
+            test
+        </span>
+    </div>
+    <div id="div2" draggable="false">
+
+    </div>
+</div>
+<script>
+    var div1_1 = document.getElementById('div1_1');
+    var div2 = document.getElementById('div2');
+    var boxLeftSize;
+    var boxTopSize;
+    var div1_1Flag;
+    div1_1.onmousedown = function (e) {
+        console.log(6666666666666);
+        boxLeftSize = e.clientX - div1_1.offsetLeft;
+        boxTopSize = e.clientY - div1_1.offsetTop;
+        div1_1Flag = true;
+    };
+    div1_1.ondragstart = function (e) {
+//            console.log(e.clientX);
+    };
+    //        div1_1.ondrag = function () {
+    //            console.log(333);
+    //        };
+    div1_1.ondragend = function () {
+        console.log(444);
+        div1_1Flag = false;
+    };
+
+    div2.ondragenter = function (e) {
+//            console.log(e.relatedTarget);
+        console.log(12);
+    };
+    div2.ondragover = function (e) {
+//            console.log(13);
+        e.preventDefault();
+    };
+    div2.ondragleave = function () {
+        console.log(14);
+    };
+    div2.ondrop = function (e) {
+        console.log(15);
+//            console.log(e.clientX);
+//            console.log(div2.offsetLeft);
+        if(div1_1Flag == true){
+            var targeteBoxLeftSize = e.clientX - div2.offsetLeft - boxLeftSize;
+            var targeteBoxTopSize = e.clientY - div2.offsetTop - boxTopSize;
+//            console.log(targeteBoxLeftSize);
+//            console.log(targeteBoxTopSize);
+            var newNode = div1_1.cloneNode(true);
+            newNode.setAttribute('draggable','false');
+            newNode.removeAttribute('id');
+            newNode.style.margin = 0;
+            newNode.style.left = targeteBoxLeftSize + 'px';
+            newNode.style.top = targeteBoxTopSize + 'px';
+            div2.appendChild(newNode);
+        }
+    };
+
+    div2.ondragstart = function (e) {
+        return false;
+    };
+
+</script>
+</body>
+</html>

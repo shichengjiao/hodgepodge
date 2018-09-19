@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #container{
+            margin: 50px;
+        }
+        #div1{
+            width: 200px;
+            height: 800px;
+            float: left;
+            border: 1px solid red;
+            margin-right: 1px;
+        }
+        #div2{
+            width: 800px;
+            height: 600px;
+            float: left;
+            border: 1px solid blue;
+            position: relative;
+            /*background: url(img/bg.png);*/
+        }
+        #div1_1{
+            width: 100px;
+            height: 100px;
+            background-color: #ccc;
+            margin:20px;
+            box-sizing: border-box;
+        }
+        #div2_1{
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background-color: #ccc;
+            left: 0;
+            top: 0;
+        }
+    </style>
+    <script src="jquerytz/jquery-1.11.0.min.js"></script>
+</head>
+<body>
+<div id="container">
+    <div id="div1">
+        <div id="div1_1">
+
+        </div>
+    </div>
+    <div id="div2">
+        <div id="div2_1">
+
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        var perRange = 20;
+        var containerWidth = $('#div2').width();
+        var containerHeight = $('#div2').height();
+        var div2_1Width = $('#div2_1').width();
+        var div2_1Height = $('#div2_1').height();
+        var widthArrayStore = [];
+        var heightArrayStore = [];
+        for(var i=0;i<containerWidth/perRange;i++){
+            widthArrayStore.push(i*perRange);
+        }
+        for(var k=0;k<containerHeight/perRange;k++){
+            heightArrayStore.push(k*perRange);
+        }
+        console.log(heightArrayStore);
+        var div2_1 = $('#div2_1').get(0);
+
+        div2_1.onmousedown=function(ev){
+            console.log('aaa');
+            var e=ev||event;
+            var disX=e.clientX-div2_1.offsetLeft;
+            var disY=e.clientY-div2_1.offsetTop;
+            var movePointX = e.clientX;
+            var movePointY = e.clientY;
+            var leftResult;
+            var topResult;
+            document.onmousemove=function(ev){
+                var e=ev||event;
+                var l=e.clientX-disX;
+                var t=e.clientY-disY;
+//                console.log(clickPointX);
+
+                if (l<0) {
+                    l=0;
+                }
+                if (t<0) {
+                    t=0;
+                }
+                if (l>containerWidth-div2_1Width) {
+                    l=containerWidth-div2_1Width;
+                }
+                if (t>containerHeight-div2_1Height) {
+                    t=containerHeight-div2_1Height;
+                }
+
+                for(var j=0;j<widthArrayStore.length;j++){
+                    if(e.clientX > movePointX && l>widthArrayStore[j] && l<widthArrayStore[j+1]){
+                        leftResult = widthArrayStore[j+1];
+                        break;
+                    }else if(e.clientX < movePointX && l>widthArrayStore[j] && l<widthArrayStore[j+1]){
+                        leftResult = widthArrayStore[j];
+                        break;
+                    }
+                }
+                for(var m=0;m<heightArrayStore.length;m++){
+                    if(e.clientY > movePointY && t>heightArrayStore[m] && t<heightArrayStore[m+1]){
+                        topResult = heightArrayStore[m+1];
+                        break;
+                    }else if(e.clientY < movePointY && t>heightArrayStore[m] && t<heightArrayStore[m+1]){
+                        topResult = heightArrayStore[m];
+                        break;
+                    }
+                }
+
+                movePointX = e.clientX;
+                movePointY = e.clientY;
+
+//                console.log(l);
+                console.log(topResult);
+                div2_1.style.left=leftResult+'px';
+                div2_1.style.top=topResult+'px';
+            };
+            document.onmouseup=function(){
+                document.onmousemove='';
+                document.onmouseup='';
+            };
+            return false;
+        };
+    });
+</script>
+</body>
+</html>

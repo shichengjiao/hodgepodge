@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #container{
+            margin: 50px;
+        }
+        #div1{
+            width: 200px;
+            height: 800px;
+            float: left;
+            border: 1px solid red;
+        }
+        #div2{
+            width: 800px;
+            height: 800px;
+            float: left;
+            border: 1px solid blue;
+        }
+        #div1_1{
+            width: 100px;
+            height: 100px;
+            background-color: #ccc;
+            margin:20px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="div1">
+            <div id="div1_1" draggable="true">
+
+            </div>
+        </div>
+        <div id="div2">
+
+        </div>
+    </div>
+    <script>
+        var div1_1 = document.querySelector('#div1_1');
+//        div1_1.ondragstart = function () {
+//            console.log(222);
+//        };
+//        div1_1.ondrag = function () {
+//            console.log(333);
+//        };
+//        div1_1.ondragend = function () {
+//            console.log(444);
+//        };
+
+        var div2 = document.querySelector('#div2');
+        div2.ondragenter = function () {
+            console.log(12);
+        };
+        div2.ondragover = function (e) {
+            console.log(13);
+            e.preventDefault();
+        };
+        div2.ondragleave = function () {
+            console.log(14);
+        };
+        div2.ondrop = function () {
+            console.log(15);
+        };
+    </script>
+</body>
+</html>
